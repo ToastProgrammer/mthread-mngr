@@ -1,0 +1,8 @@
+/bin
+/build
+
+# CMake generated files
+*.cmake
+*.ninja
+CMakeCache.txt
+CMakeFiles
