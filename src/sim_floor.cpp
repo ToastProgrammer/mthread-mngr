@@ -5,25 +5,48 @@
 
 #include <sim_floor.h>
 
-
-
-RobotFloorSimulator::RobotFloorSimulator(int n){
-    std::unique_ptr<std::vector<int>> mgr_floor = std::make_unique<std::vector<int>>(n);
-    }
-
-RobotFloorSimulator::~RobotFloorSimulator()
+SimGrid::SimGrid()
 {
 }
 
-void RobotFloorSimulator::run()
+SimGrid::~SimGrid()
 {
 }
 
-void RobotFloorSimulator::printFloor()
+void SimGrid::moveRobot(int occupant_id, Coord c, Coord new_c)
 {
 }
 
-bool RobotFloorSimulator::addStep()
+void SimGrid::moveRobotBy(int occupant_id, Coord new_c)
+{
+}
+
+void SimGrid::addRobot(int occupant_id, Coord c)
+{
+}
+
+void SimGrid::delRobot(int occupant_id, Coord c)
+{
+}
+
+SimManager::SimManager(int n)
+{
+    
+}
+
+SimManager::~SimManager()
+{
+}
+
+void SimManager::run()
+{
+}
+
+void SimManager::printFloor()
+{
+}
+
+bool SimManager::addStep()
 {
     return false;
 }
@@ -35,31 +58,7 @@ std::string getInputCmd(){
     return cmd;
 }
 
-RobotFloorGrid::RobotFloorGrid()
+int _get(int x, int y)
 {
-}
-
-RobotFloorGrid::~RobotFloorGrid()
-{
-}
-
-
-bool RobotFloorGrid::isOccupied(int x, int y)
-{
-    return false;
-}
-
-int RobotFloorGrid::moveRobot(int occupant_id, int x, int y, int new_x, int new_y)
-{
-    return 0;
-}
-
-int RobotFloorGrid::moveRobotBy(int occupant_id, int dx, int dy)
-{
-    return 0;
-}
-
-int RobotFloorGrid::addRobot(int x, int y)
-{
-    return 0;
+    
 }

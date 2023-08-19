@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 
+
 #define NO_OCCUPANT 0
 
 
@@ -15,49 +16,51 @@ struct Coord{
 };
 
 
-struct RobotFloorSpace{
-    Coord loc;
-    int id;
-
-    RobotFloorSpace(int n_x, int n_y, int n_id) : loc(n_x, n_y), id(n_id) {}
-    bool get() { return (bool(id)); }
-    void put(int new_id) { id = id; }
-    void clear() { id = NO_OCCUPANT; }
-    
-};
-
-class RobotFloorGrid{
+class SimGrid{
 public:
-    RobotFloorGrid();
-    ~RobotFloorGrid();
+    SimGrid();
+    ~SimGrid();
 
-    bool isOccupied(int x, int y);
-    int moveRobot(int occupant_id, int x, int y, int new_x, int new_y);
-    int moveRobotBy(int occupant_id, int dx, int dy);
-    int addRobot(int x, int y);
+    bool get(Coord c) { return (_get(c)); }
+    bool isFull(Coord c) { return (bool(_get(c))); }
+    void put(Coord c, int new_id) { _set(c, new_id); }
+    void clear(Coord c) {  _set(c, NO_OCCUPANT); }
+    
+    void moveRobot(int occupant_id, Coord c, Coord new_c);
+    void moveRobotBy(int occupant_id, Coord new_c);
+    void addRobot(int occupant_id, Coord c);
+    void delRobot(int occupant_id, Coord c);
+
     
 private:
-    std::unique_ptr<std::vector<RobotFloorSpace>> space;
-    int x_size;
-    int y_size;
+    std::unique_ptr<std::vector<int>> grid;
+    Coord bound;    // Coordingate of furthest boundary edge from 0, 0
 
-    int _get(int x, int y);
+    int _index(int x, int y) { return (x + (y * bound.x));}
+    int _index(Coord c) { return (c.x + c.y * bound.x);}
 
+    int _get(int x, int y) { return grid->at(_index(x, y));}
+    int _get(Coord c) { return grid->at(_index(c.x, c.y));}
+
+    void _set(int x, int y, int new_id) { grid->at(_index(x, y)) = new_id; }
+    void _set(Coord c, int new_id) { grid->at(_index(c.x, c.y)) = new_id; }
 };
 
 
-class RobotFloorSimulator{
+class SimManager{
 
 public:
-    RobotFloorSimulator(int n);
-    ~RobotFloorSimulator();
+    SimManager(int n);
+    ~SimManager();
 
     void run();
     void printFloor();
+    bool addStep();
 
 private:
-    bool addStep();
-    RobotFloorGrid floor;
+    
+    std::unique_ptr<SimGrid> floor;
+    int status;
 };
 
 #endif // SIM_FLOOR_H
