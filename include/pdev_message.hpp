@@ -17,7 +17,7 @@ public:
 
     void push(T msg);
 
-    T pop();
+    T& pop();
     {
         T msg = buffer[head];
         head = (head + 1) % buffer.size();
@@ -43,5 +43,20 @@ public:
     void parse(const std::stringstream &file);
 
 };
+
+template <typename T>
+void MessageQueue<T>::push(T msg)
+{
+    buffer[tail] = msg;
+    tail = (tail + 1) % buffer.size();
+}
+
+template <typename T>
+T& MessageQueue<T>::pop()
+{
+    T msg = buffer[head];
+    head = (head + 1) % buffer.size();
+    return msg;
+}
 
 #endif // PDEV_MESSAGE_H

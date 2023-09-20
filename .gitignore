@@ -6,3 +6,6 @@
 *.ninja
 CMakeCache.txt
 CMakeFiles
+
+# Project Settings Files
+/.vscode
