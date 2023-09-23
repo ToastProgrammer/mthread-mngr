@@ -10,7 +10,7 @@ The simulator is an application that maintains the current state of the system. 
 
 The simulator launches five threads: a thread for managing the state of the system, a thread for displaying the state of the system based on the state of the system, a thread for reading from the serial buffer, and a thread for writing to the serial buffer, and a thread for reading and processing user input commands.
 
-![sim diagram](./images/sim-struct.jpg?raw=true)
+[![sim diagram](images/sim-struct.jpg "Sim Diagram")](README.md)
 
 ## Device - Manager
 
