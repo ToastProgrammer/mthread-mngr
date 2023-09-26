@@ -9,3 +9,8 @@ CMakeFiles
 
 # Project Settings Files
 /.vscode
+
+
+# Docs
+*.drawio.bkp
+*.drawio.dtmp
