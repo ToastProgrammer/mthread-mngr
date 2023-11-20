@@ -1,8 +1,14 @@
 /bin
 /build
+*.bkp
 
 # CMake generated files
 *.cmake
 *.ninja
 CMakeCache.txt
 CMakeFiles
+
+.ninja_deps
+.ninja_log
+
+.vscode
