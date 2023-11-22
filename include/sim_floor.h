@@ -30,7 +30,6 @@ class SimGrid{
 public:
     SimGrid() : bound(0, 0), grid(std::make_unique<std::vector<int>>(0)) {}
     SimGrid(int x, int y);
-    ~SimGrid();
 
     bool get(Coord c);
     bool isFull(Coord c);
@@ -63,7 +62,6 @@ class SimManager{
 
 public:
     SimManager(int n);
-    ~SimManager();
 
     void run();
     void printFloor();

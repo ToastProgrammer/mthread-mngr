@@ -14,9 +14,6 @@ SimGrid::SimGrid(int x, int y){
     grid = std::make_unique<std::vector<int>>(x * y, NO_OCCUPANT);
 }
 
-SimGrid::~SimGrid(){
-}
-
 /*
 The following functions that call the private functions of the 
 same name may change with implementation of thread safety mechanisms.
@@ -54,33 +51,49 @@ void SimGrid::moveRobot(int occupant_id, Coord c, Coord new_c){
 void SimGrid::addRobot(int occupant_id, Coord c){
     if (isFull(c)){
         //TODO: Throw exception
-        std::cout << "Error: Device " << occupant_id << " not at " << c.x << ", " << c.y << std::endl;
+        std::cout << "Error: Device " << occupant_id << " cannot be added at " << c.x << ", " << c.y << "as it is not empty" << std::endl;
     } else {
         _set(occupant_id, c);
     }
 }
 
 void SimGrid::delRobot(int occupant_id, Coord c){
-
+    if (!_verify(occupant_id, c)){
+        //TODO: Throw exception
+        std::cout << "Error: Device " << occupant_id << " cannot be removed at " << c.x << ", " << c.y << "as it is not located there" << std::endl;
+    } else {
+        _set(NO_OCCUPANT, c);
+    }
 }
 
 void SimGrid::printFloor(){
-    for (int y = 0; y < bound.y; y++)
+    int id;
+    std::string outp;
+
+    outp.reserve((bound.x * 5 + 1) * bound.y);
+
+    for (int i; i < bound.x; i++){
+        outp += "____";
+    }
+    outp += "\n";
+    for (int j = 0; j < bound.y; j++)
     {
-        for (int x = 0; x < bound.x; x++)
+        for (int i = 0; i < bound.x; i++)
         {
-            std::cout << _get(x, y) << " ";
+            id = _get(i, j);
+            outp += "|_";
+            if (id == NO_OCCUPANT)
+                outp += "_";
+            else
+                outp += std::to_string(id);
+            outp += "_|";
         }
-        std::cout << std::endl;
+        outp += "|\n";
     }
 }
 
 SimManager::SimManager(int n){
     
-}
-
-SimManager::~SimManager(){
-
 }
 
 void SimManager::run(){
