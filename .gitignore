@@ -5,6 +5,7 @@
 # CMake generated files
 *.cmake
 *.ninja
+*.tcl
 CMakeCache.txt
 CMakeFiles
 

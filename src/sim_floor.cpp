@@ -5,14 +5,7 @@
 
 #include <sim_floor.h>
 
-const Coord BASE(0, 0);
-
-
-
-SimGrid::SimGrid(int x, int y){
-    bound = Coord(x, y);
-    grid = std::make_unique<std::vector<int>>(x * y, NO_OCCUPANT);
-}
+const Coord GRID_ORIGIN(0, 0);
 
 /*
 The following functions that call the private functions of the 
@@ -39,7 +32,7 @@ void SimGrid::moveRobot(int occupant_id, Coord c, Coord new_c){
     if (!_verify(occupant_id, c)){
         //TODO: Throw exception
         std::cout << "Error: Device " << occupant_id << " not at " << c.x << ", " << c.y << std::endl;
-    }else if (new_c < BASE || new_c < bound){
+    }else if (new_c < GRID_ORIGIN || new_c < bound){
         //TODO: Throw exception
         std::cout << "Error: Device " << occupant_id << "cannot reach space out of bounds (" << c.x << ", " << c.y << ")" << std::endl;
     }else{
@@ -92,25 +85,52 @@ void SimGrid::printFloor(){
     }
 }
 
-SimManager::SimManager(int n){
-    
+std::string getInputCmd(){
+    std::string cmd;
+    std::cout << "Enter command: ";
+    std::getline(std::cin, cmd);
+    return cmd;
 }
 
 void SimManager::run(){
-
+    std::string cmd;
+    while (status == 0){
+        cmd = getInputCmd();
+        if (cmd == "exit"){
+            status = 1;
+        } else if (cmd == "print"){
+            printFloor();
+        }
+    }
 }
 
 void SimManager::printFloor(){
     floor->printFloor();
 }
 
-bool SimManager::addStep(){
-    return false;
+void SimManager::cmd(mngr_cmd_t cmd, int id, Coord c, Coord delta_c)
+{
+    switch (cmd)
+    {
+    case mngr_cmd_t::ADD:
+        floor->addRobot(id, c);
+        break;
+    case mngr_cmd_t::DEL:
+        floor->delRobot(id, c);
+        break;
+    case mngr_cmd_t::MOVE :
+        floor->moveRobotBy(id, c, delta_c);
+        break;
+    case mngr_cmd_t::MOVE_BY :
+        floor->moveRobotBy(id, c, delta_c);
+        break;
+    default:
+        //TODO: Throw exception
+        std::cout << "Error: Invalid command [" << std::to_string(cmd) << "] (cmd=" << cmd << ",id=" << std::to_string(id) << ",c=(" << c.x << c.y << "),delta_c=(" << c.x << c.y << "))" << std::endl;
+        break;
+    }
 }
 
-std::string getInputCmd(){
-    std::string cmd;
-    std::cout << ">> ";
-    std::getline(std::cin, cmd);
-    return cmd;
+bool SimManager::addStep(){
+    return false;
 }

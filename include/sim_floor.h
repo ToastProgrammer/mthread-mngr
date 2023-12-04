@@ -8,6 +8,14 @@
 
 #define NO_OCCUPANT 0
 
+enum mngr_cmd_t{
+    CMD_BASE = 0x0f,
+    ADD = CMD_BASE + 1,
+    DEL,
+    MOVE,
+    MOVE_BY,
+};
+
 
 struct Coord{
     Coord() : x(0), y(0) {}
@@ -15,7 +23,6 @@ struct Coord{
 
     Coord operator+(const Coord& rhs) const { return Coord(x + rhs.x, y + rhs.y); }
     bool operator==(const Coord& rhs) const { return (x == rhs.x && y == rhs.y); }
-    /*Over*/
     bool operator<(const Coord& rhs) const { return (x < rhs.x && y < rhs.y); }
     bool operator>(const Coord& rhs) const { return (x > rhs.x && y > rhs.y); }
     bool operator<=(const Coord& rhs) const { return (x <= rhs.x && y <= rhs.y); }
@@ -29,7 +36,7 @@ struct Coord{
 class SimGrid{
 public:
     SimGrid() : bound(0, 0), grid(std::make_unique<std::vector<int>>(0)) {}
-    SimGrid(int x, int y);
+    SimGrid(Coord grid_size) : bound(grid_size), grid(std::make_unique<std::vector<int>>(grid_size.x * grid_size.y, NO_OCCUPANT)) {}
 
     bool get(Coord c);
     bool isFull(Coord c);
@@ -61,10 +68,12 @@ private:
 class SimManager{
 
 public:
-    SimManager(int n);
+    SimManager() : floor(std::make_unique<SimGrid>(Coord(0, 0))), status(0) {};
+    SimManager(Coord grid_size) : floor(std::make_unique<SimGrid>(grid_size)), status(0) {};
 
     void run();
     void printFloor();
+    void cmd(mngr_cmd_t cmd, int id, Coord c, Coord delta_c = Coord(0, 0));
     bool addStep();
 
 private:
